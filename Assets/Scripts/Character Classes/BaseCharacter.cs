@@ -38,18 +38,10 @@ public class BaseCharacter : MonoBehaviour {
         _primaryAttribute = new Attribute[Enum.GetValues(typeof(AttributeName)).Length];
         _vital = new Vital[Enum.GetValues(typeof(VitalName)).Length];
         _skill = new Skill[Enum.GetValues(typeof(SkillName)).Length];
+        SetupPrimaryAttributes();
+        SetupSkills();
+        SetupVitals();
     }
-
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
-
     private void SetupPrimaryAttributes()
     {
         for (int i = 0; i < _primaryAttribute.Length; i++)
@@ -63,6 +55,7 @@ public class BaseCharacter : MonoBehaviour {
         {
             _vital[i] = new Vital();
         }
+        SetupVitalModifier();
     }
     private void SetupSkills()
     {
@@ -70,6 +63,7 @@ public class BaseCharacter : MonoBehaviour {
         {
             _skill[i] = new Skill();
         }
+        SetupSkillModifier();
     }
     public void AddExp(uint exp)
     {
@@ -79,5 +73,75 @@ public class BaseCharacter : MonoBehaviour {
     public void CalculateLevel ()
     {
 
+    }
+
+    public Attribute GetPrimaryAttribute(int index)
+    {
+        return _primaryAttribute[index];
+    }
+    public Vital GetVital(int index)
+    {
+        return _vital[index];
+    }
+    public Skill GetSkill(int index)
+    {
+        return _skill[index];
+    }
+    private void SetupVitalModifier()
+    {
+        //heath
+        ModifyingAttribute health = new ModifyingAttribute();
+        health.attribute = GetPrimaryAttribute((int)AttributeName.Constitution);
+        health.ratio = .5f;
+        GetVital((int)VitalName.Health).AddModifer(health);
+        //energy
+        ModifyingAttribute energyModifier = new ModifyingAttribute();
+        energyModifier.attribute = GetPrimaryAttribute((int)AttributeName.Constitution);
+        energyModifier.ratio = 1f;
+        GetVital((int)VitalName.Energy).AddModifer(energyModifier);
+        //Mana
+        ModifyingAttribute manaModifier = new ModifyingAttribute();
+        manaModifier.attribute = GetPrimaryAttribute((int)AttributeName.Willpower);
+        manaModifier.ratio = 1f;
+        GetVital((int)VitalName.Mana).AddModifer(manaModifier);
+    }
+    private void SetupSkillModifier()
+    {
+        // Old way Melee Offence
+        ModifyingAttribute melee_Offence_1 = new ModifyingAttribute();
+        ModifyingAttribute melee_Offence_2 = new ModifyingAttribute();
+        melee_Offence_1.attribute = GetPrimaryAttribute((int)AttributeName.Strength);
+        melee_Offence_1.ratio = .33f;
+        melee_Offence_2.attribute = GetPrimaryAttribute((int)AttributeName.Nimbleness);
+        melee_Offence_2.ratio = .33f;
+        GetSkill((int)SkillName.Melee_Offence).AddModifer(melee_Offence_1);
+        GetSkill((int)SkillName.Melee_Offence).AddModifer(melee_Offence_2);
+        // new way Melee Defence
+        GetSkill((int)SkillName.Melee_Deffence).AddModifer(new ModifyingAttribute(GetPrimaryAttribute((int)AttributeName.Speed), .33f));
+        GetSkill((int)SkillName.Melee_Deffence).AddModifer(new ModifyingAttribute(GetPrimaryAttribute((int)AttributeName.Constitution), .33f));
+        // Magic Defence
+        GetSkill((int)SkillName.Magic_Defence).AddModifer(new ModifyingAttribute(GetPrimaryAttribute((int)AttributeName.Concentration), .33f));
+        GetSkill((int)SkillName.Magic_Defence).AddModifer(new ModifyingAttribute(GetPrimaryAttribute((int)AttributeName.Willpower), .33f));
+        // Magic Offence
+        GetSkill((int)SkillName.Magic_Offence).AddModifer(new ModifyingAttribute(GetPrimaryAttribute((int)AttributeName.Concentration), .33f));
+        GetSkill((int)SkillName.Magic_Offence).AddModifer(new ModifyingAttribute(GetPrimaryAttribute((int)AttributeName.Willpower), .33f));
+        //Range Offence
+        GetSkill((int)SkillName.Ranged_Offence).AddModifer(new ModifyingAttribute(GetPrimaryAttribute((int)AttributeName.Concentration), .33f));
+        GetSkill((int)SkillName.Ranged_Offence).AddModifer(new ModifyingAttribute(GetPrimaryAttribute((int)AttributeName.Speed), .33f));
+        //Range Defence
+        GetSkill((int)SkillName.Ranged_Deffence).AddModifer(new ModifyingAttribute(GetPrimaryAttribute((int)AttributeName.Speed), .33f));
+        GetSkill((int)SkillName.Ranged_Deffence).AddModifer(new ModifyingAttribute(GetPrimaryAttribute((int)AttributeName.Nimbleness), .33f));
+    }
+
+    public void UpdateStats()
+    {
+        for (int i = 0; i < _vital.Length; i++)
+        {
+            _vital[i].Update();
+        }
+        for (int j = 0; j < _skill.Length; j++)
+        {
+            _skill[j].Update();
+        }
     }
 }
