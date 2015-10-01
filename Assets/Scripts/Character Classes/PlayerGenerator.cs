@@ -9,6 +9,7 @@ public class PlayerGenerator : MonoBehaviour {
     private const int MIN_ATTRIBUTE_VALUE = 10;
     private const int STARTING_POINTS = 50;
     private int pointsLeft;
+    public GameObject PlayerPrefab;
 
     private const int OFFSET = 5;
     private const int LINE_HEIGHT = 20;
@@ -21,8 +22,12 @@ public class PlayerGenerator : MonoBehaviour {
     // Use this for initialization
 
     void Start () {
-        _toon = new PlayerCharacter();
-        _toon.Awake();
+        GameObject pc = Instantiate(PlayerPrefab, Vector3.zero, Quaternion.identity) as GameObject ;
+        pc.name = "Player Character";
+
+        //_toon = new PlayerCharacter();
+        //_toon.Awake();
+        _toon = pc.GetComponent<PlayerCharacter>();
         pointsLeft = STARTING_VALUE;
         for (int i = 0; i < Enum.GetValues(typeof(AttributeName)).Length; i++)
         {
@@ -46,8 +51,18 @@ public class PlayerGenerator : MonoBehaviour {
         DisplayAttributes();
         DisplayVitals();
         DisplaySkills();
-   
+        if (_toon.Name == String.Empty || pointsLeft > 0)
+        {
+            DisplayCreateLabel();
+        }
+        else
+        {
+            DiplayCreateButton();
+        }
+
+
     }
+
     private void DisplayName()
     {
         GUI.Label(new Rect(OFFSET, 10, 50, 25), "Name: ");
@@ -84,7 +99,7 @@ public class PlayerGenerator : MonoBehaviour {
     private void DisplayVitals()
     {
         for (int i = 0; i < Enum.GetValues(typeof(VitalName)).Length; i++)
-        {
+        { 
             GUI.Label(new Rect(OFFSET, STARTING_POS + ((i+7) * LINE_HEIGHT), STAT_LABEL_WIDTH, LINE_HEIGHT), ((VitalName)i).ToString());
             GUI.Label(new Rect(OFFSET + STAT_LABEL_WIDTH, STARTING_POS + ((i+7) * LINE_HEIGHT), BASEVALUE_LABEL, LINE_HEIGHT), _toon.GetVital(i).AdjustedBaseValue.ToString());
         }
@@ -101,5 +116,27 @@ public class PlayerGenerator : MonoBehaviour {
     {
         GUI.Label(new Rect(250, 10, 100, 25), "Points Left: " + pointsLeft);
 
+    }
+    private void DiplayCreateButton()
+    {
+      if(GUI.Button(new Rect(Screen.width/2 -50, STARTING_POS + ( 10 * LINE_HEIGHT), STAT_LABEL_WIDTH, LINE_HEIGHT), "Create"))
+        {
+            GameObject gs = GameObject.Find("GameSettings");
+            GameSettings gsScript = gs.GetComponent<GameSettings>();
+            UpdateCurrentVitalValue();
+            gsScript.SaveCharacterData();
+            Application.LoadLevel("mainGame");
+        }
+    }
+    private void DisplayCreateLabel()
+    {
+        GUI.Label(new Rect(Screen.width / 2 - 50, STARTING_POS + (10 * LINE_HEIGHT), STAT_LABEL_WIDTH, LINE_HEIGHT), "Enter Name");
+    }
+    private void UpdateCurrentVitalValue()
+    {
+        for (int i = 0; i < Enum.GetValues(typeof(VitalName)).Length; i++)
+        {
+            _toon.GetVital(i).CurrentValue = _toon.GetVital(i).AdjustedBaseValue;
+        }
     }
 }

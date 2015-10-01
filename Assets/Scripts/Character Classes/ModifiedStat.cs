@@ -32,6 +32,23 @@ public class ModifiedStat : BaseStat {
     {
         CalculateModValue();
     }
+    public string GetModifyingAttributesStrings()
+    {
+        string tmp = string.Empty ;
+        for (int i = 0; i < mods.Count; i++)
+        {
+            tmp += mods[i].attribute.Name;
+            tmp += "_";
+            tmp += mods[i].ratio;
+
+            if (i < mods.Count -1)
+            {
+                tmp += "|";
+            }
+        
+        }
+        return tmp;
+    }
 }
 public struct ModifyingAttribute
 {

@@ -47,6 +47,7 @@ public class BaseCharacter : MonoBehaviour {
         for (int i = 0; i < _primaryAttribute.Length; i++)
         {
             _primaryAttribute[i] = new Attribute();
+            _primaryAttribute[i].Name = ((AttributeName)i).ToString();
         }
     }
     private void SetupVitals()
