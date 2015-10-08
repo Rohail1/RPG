@@ -22,7 +22,7 @@ public class GameSettings : MonoBehaviour {
     {
         PlayerCharacter pcClass = GameObject.Find("Player Character").GetComponent<PlayerCharacter>();
         PlayerPrefs.SetString("PlayerName",pcClass.name);
-        PlayerPrefs.DeleteAll();
+       // PlayerPrefs.DeleteAll();
 
         //if level modifier are different for each skill vital or attribute you must save them as well
 

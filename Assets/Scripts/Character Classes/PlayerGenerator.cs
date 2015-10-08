@@ -125,7 +125,7 @@ public class PlayerGenerator : MonoBehaviour {
             GameSettings gsScript = gs.GetComponent<GameSettings>();
             UpdateCurrentVitalValue();
             gsScript.SaveCharacterData();
-            Application.LoadLevel("mainGame");
+            Application.LoadLevel("level1");
         }
     }
     private void DisplayCreateLabel()

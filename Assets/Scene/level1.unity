@@ -166,7 +166,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 746207429}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -199,6 +199,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerCharacter: {fileID: 150838, guid: 537800cff01a39249a173c0bc46a8746, type: 2}
+  mainCamera: {fileID: 746207433}
+  gameSettingsPrefab: {fileID: 126022, guid: 172b1dceb2015824d8a37fb19df6b071, type: 2}
+  zOffset: -2.5
+  yOffset: 2.5
+  xRotOffset: 22.5
 --- !u!4 &1360090290
 Transform:
   m_ObjectHideFlags: 0
@@ -206,7 +211,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1360090288}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.53722382, y: -2.77649117, z: 2.73930931}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

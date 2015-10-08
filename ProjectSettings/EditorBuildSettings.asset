@@ -8,4 +8,4 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scene/Charactor Generator.unity
   - enabled: 1
-    path: Assets/Scene/mainGame.unity
+    path: Assets/Scene/level1.unity
